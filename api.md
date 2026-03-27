@@ -1,18 +1,5 @@
-Here is the complete set of API routes for your dance studio platform, organized by their functional purpose.
-
-### 1. Authentication & Profile
-These routes manage user identity, registration, and security.
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Create a new student account |
-| `POST` | `/api/auth/login` | Authenticate and receive a JWT/Session |
-| `POST` | `/api/auth/logout` | Invalidate current session |
-| `GET` | `/api/auth/me` | Get current user's profile and role |
-| `PATCH` | `/api/auth/profile` | Update personal details (phone, emergency contact) |
-
-### 2. Class Definitions (The "Catalog")
-These manage the types of dance offered (e.g., "Level 1 Hip Hop").
+### 1. Class Definitions
+Manage the types of dance classes offered.
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -22,8 +9,8 @@ These manage the types of dance offered (e.g., "Level 1 Hip Hop").
 | `PUT` | `/api/classes/:id` | **[Admin]** Edit class details or level |
 | `DELETE` | `/api/classes/:id` | **[Admin]** Archive/Remove a class type |
 
-### 3. Schedules & Sessions (The "Calendar")
-These manage the time slots (Schedule Templates) and the actual instances (Sessions).
+### 2. Schedules & Sessions
+Manage time slots and the actual instances (Sessions).
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -33,8 +20,8 @@ These manage the time slots (Schedule Templates) and the actual instances (Sessi
 | `PATCH` | `/api/sessions/:id` | **[Admin]** One-off change (e.g., sub teacher) |
 | `DELETE` | `/api/sessions/:id` | **[Admin]** Cancel a single specific class instance |
 
-### 4. Bookings (Student Actions)
-Routes for students to reserve spots and manage their attendance.
+### 3. Bookings (Student Actions)
+Routes for students to manage and reserve bookings and view their attendance.
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -43,7 +30,7 @@ Routes for students to reserve spots and manage their attendance.
 | `DELETE` | `/api/bookings/:id` | Cancel a reservation (subject to studio policy) |
 | `GET` | `/api/bookings/history` | View a log of all past attended classes |
 
-### 5. Studio Administration
+### 4. Studio Administration
 High-level management routes restricted to owners and staff.
 
 | Method | Endpoint | Description |
@@ -54,19 +41,10 @@ High-level management routes restricted to owners and staff.
 | `GET` | `/api/admin/roster/:sessionId` | Get list of students signed up for a session |
 | `POST` | `/api/admin/attendance` | Mark students as Present, Absent, or No-Show |
 
-### 6. System & Automation
+### 5. System & Automation
 Internal routes used for maintenance and background tasks.
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/api/cron/generate` | Trigger the worker to create next 2 weeks of sessions |
 | `GET` | `/api/system/health` | Check database and server status |
-
----
-
-### Suggested Middleware Logic
-To keep your code clean, I recommend applying these three middleware layers:
-
-1.  **`authGuard`**: Applied to all routes except login/register and public schedule viewing. Verifies the user is logged in.
-2.  **`adminGuard`**: Applied to all routes marked **[Admin]**. Checks if `user.role === 'admin'`.
-3.  **`validationGuard`**: Checks request bodies (e.g., ensures a booking request has a valid `sessionId` before hitting the database).
